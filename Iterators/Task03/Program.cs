@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Threading;
 using System.Globalization;
 
 /* На вход подается число N.
@@ -36,6 +37,9 @@ namespace Task03
     {
         static void Main(string[] args)
         {
+            var cult = new CultureInfo("ru-RU");
+            Thread.CurrentThread.CurrentCulture = cult;
+            Thread.CurrentThread.CurrentUICulture = cult;
             try
             {
                 int N = 0;
@@ -115,32 +119,34 @@ namespace Task03
     public class PeopleEnum : IEnumerator
     {
         public Person[] _people;
-        private int position = -1;
+        private readonly IEnumerator enumerator;
 
         public PeopleEnum(Person[] people)
         {
             _people = (Person[])people.Clone();
-            Array.Sort(_people, (a, b) => a.ToString().CompareTo(b.ToString()));
+            Array.Sort(_people,
+                (a, b) => a.ToString().CompareTo(b.ToString()));
+            enumerator = _people.GetEnumerator();
         }
 
         public bool MoveNext()
         {
-            return ++position < _people.Length;
+            return enumerator.MoveNext();
         }
 
         public void Reset()
         {
-            position = -1;
+            enumerator.Reset();
         }
 
         object IEnumerator.Current
         {
-            get => _people[position];
+            get => enumerator.Current;
         }
 
         public Person Current
         {
-            get => _people[position];
+            get => (Person)enumerator.Current;
         }
     }
 }
