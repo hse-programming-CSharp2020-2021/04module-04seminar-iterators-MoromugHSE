@@ -25,7 +25,7 @@ namespace Task01
             try
             {
                 int value;
-                if (!int.TryParse(Console.ReadLine(), out value))
+                if (!int.TryParse(Console.ReadLine(), out value) || value <= 0)
                     throw new ArgumentException("Ну там плохо всё");
                 foreach (int el in Fibonacci(value))
                 {
@@ -43,7 +43,7 @@ namespace Task01
             int prev = 1;
             int cur = 0;
             int next;
-            while ((next = prev + cur) < maxValue)
+            while ((next = prev + cur) <= maxValue)
             {
                 prev = cur;
                 yield return cur = next;
