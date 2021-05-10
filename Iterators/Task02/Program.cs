@@ -37,6 +37,8 @@ namespace Task02
         public IteratorSample(string[] values, int start)
         {
             this.values = values;
+            if (start < 1 || start > values.Length)
+                throw new ArgumentException("Нет");
             this.start = start - 1;
         }
 

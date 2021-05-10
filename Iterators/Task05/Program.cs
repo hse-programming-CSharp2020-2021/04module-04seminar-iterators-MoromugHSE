@@ -59,7 +59,7 @@ namespace Task05
 
         public bool MoveNext()
         {
-           
+
         }
 
     }

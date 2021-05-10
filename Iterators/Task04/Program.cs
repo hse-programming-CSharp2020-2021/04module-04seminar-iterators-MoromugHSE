@@ -27,7 +27,7 @@ namespace Task04
         {
             try
             {
-                int value = 
+                int value = int.Parse(Console.ReadLine());
                 MyInts myInts = new MyInts();
                 IEnumerator enumerator = myInts.MyEnumerator(value);
 
@@ -44,18 +44,46 @@ namespace Task04
 
         static void IterateThroughEnumeratorWithoutUsingForeach(IEnumerator enumerator)
         {
+            while (enumerator.MoveNext())
+            {
+                Console.Write($"{enumerator.Current} ");
+            }
         }
     }
 
     class MyInts : IEnumerator // НЕ МЕНЯТЬ ЭТУ СТРОКУ
     {
+        private int currentInt = 0;
+        private int limit = 0;
         
         public bool MoveNext()
         {
+            if (currentInt >= limit)
+            {
+                Reset();
+                return false;
+            }
+            ++currentInt;
+            return true;
+        }
+
+        public void Reset()
+        {
+            currentInt = 0;
+        }
+
+        public IEnumerator MyEnumerator(int limit)
+        {
+            if (limit < 0)
+                throw new ArgumentException("Нельзя");
+            this.limit = limit;
+            Reset();
+            return (IEnumerator)this;
         }
 
         public object Current
         {
+            get => currentInt*currentInt;
         }
     }
 }
