@@ -37,8 +37,15 @@ namespace Task03
         {
             try
             {
-                int N =
+                int N = 0;
+                if (!int.TryParse(Console.ReadLine(), out N) || N <= 0)
+                    throw new ArgumentException("Нельзя");
                 Person[] people = new Person[N];
+                for (int i = 0; i < N; ++i)
+                {
+                    var name = Console.ReadLine().Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
+                    people[i] = new Person(name[0], name[1]);
+                }
 
                 People peopleList = new People(people);
 
@@ -66,7 +73,10 @@ namespace Task03
             this.lastName = lastName;
         }
 
-    
+        public override string ToString()
+        {
+            return $"{lastName} {firstName[0]}.";
+        }
     }
 
 
@@ -75,11 +85,17 @@ namespace Task03
         private Person[] _people;
         public Person[] GetPeople
         {
-            get {
+            get
+            {
                 return _people;
             }
         }
-        
+
+        public People(Person[] people)
+        {
+            _people = (Person[])people.Clone();
+        }
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -90,27 +106,36 @@ namespace Task03
             return new PeopleEnum(_people);
         }
     }
-    
+
     public class PeopleEnum : IEnumerator
     {
         public Person[] _people;
+        private int position = -1;
 
-      
+        public PeopleEnum(Person[] people)
+        {
+            _people = (Person[])people.Clone();
+            Array.Sort(_people, (a, b) => a.ToString().CompareTo(b.ToString()));
+        }
 
         public bool MoveNext()
         {
-            
+            return ++position < _people.Length;
         }
 
         public void Reset()
         {
-            
+            position = -1;
         }
-       
+
+        object IEnumerator.Current
+        {
+            get => _people[position];
+        }
 
         public Person Current
         {
-            
+            get => _people[position];
         }
     }
 }
