@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Globalization;
 
 /* На вход подается число N.
  * На каждой из следующих N строках записаны ФИО человека, 
@@ -44,13 +45,15 @@ namespace Task03
                 for (int i = 0; i < N; ++i)
                 {
                     var name = Console.ReadLine().Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
-                    people[i] = new Person(name[0], name[1]);
+                    people[i] = new Person(name[1], name[0]);
                 }
 
                 People peopleList = new People(people);
 
                 foreach (Person p in peopleList)
                     Console.WriteLine(p);
+
+                Console.WriteLine();
 
                 foreach (Person p in peopleList.GetPeople)
                     Console.WriteLine(p);
@@ -69,8 +72,10 @@ namespace Task03
 
         public Person(string firstName, string lastName)
         {
-            this.firstName = firstName;
-            this.lastName = lastName;
+            this.firstName = CultureInfo.CurrentCulture.
+                TextInfo.ToTitleCase(firstName.ToLower());
+            this.lastName = CultureInfo.CurrentCulture.
+                TextInfo.ToTitleCase(lastName.ToLower());
         }
 
         public override string ToString()
