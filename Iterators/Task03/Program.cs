@@ -41,7 +41,8 @@ namespace Task03
             var cult = new CultureInfo("ru-RU");
             Thread.CurrentThread.CurrentCulture = cult;
             Thread.CurrentThread.CurrentUICulture = cult;
-            Console.InputEncoding = Console.OutputEncoding = Encoding.BigEndianUnicode;
+            Console.InputEncoding = Encoding.UTF8;
+            Console.OutputEncoding = Encoding.UTF8;
             try
             {
                 int N = 0;
