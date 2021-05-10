@@ -8,6 +8,7 @@ using System.Collections;
  * Не хранить всю коллекцию в памяти.
  * 
  * Код, данный в условии, НЕЛЬЗЯ стирать, его можно только дополнять.
+ * (И это, к слову, отвратительно, потому как я уже не помню, не удалял ли чего...)
  * Не использовать yield и foreach. Не вызывать метод Reset() в классе Program.
  * 
  * Пример входных данных:
@@ -27,7 +28,9 @@ namespace Task04
         {
             try
             {
-                int value = int.Parse(Console.ReadLine());
+                int value = 0;
+                if (!int.TryParse(Console.ReadLine(), out value) || value <= 0)
+                    throw new ArgumentException("Нельзя");
                 MyInts myInts = new MyInts();
                 IEnumerator enumerator = myInts.MyEnumerator(value);
 
@@ -39,7 +42,7 @@ namespace Task04
             {
                 Console.WriteLine("error");
             }
-            
+
         }
 
         static void IterateThroughEnumeratorWithoutUsingForeach(IEnumerator enumerator)
@@ -58,8 +61,8 @@ namespace Task04
     class MyInts : IEnumerator // НЕ МЕНЯТЬ ЭТУ СТРОКУ
     {
         private int currentInt = 0;
-        private int limit = 0;
-        
+        private int limit = -1;
+
         public bool MoveNext()
         {
             if (currentInt >= limit)
@@ -78,11 +81,8 @@ namespace Task04
 
         public IEnumerator MyEnumerator(int limit)
         {
-            if (limit < 0)
-                throw new ArgumentException("Нельзя");
             this.limit = limit;
-            Reset();
-            return (IEnumerator)this;
+            return this;
         }
 
         public object Current
