@@ -67,7 +67,7 @@ namespace Task02
                 int startingIndex;
                 if (!int.TryParse(Console.ReadLine(), out startingIndex))
                     throw new ArgumentException("Нет");
-                string[] values = Console.ReadLine().Split();
+                string[] values = Console.ReadLine().Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (string ob in new IteratorSample(values, startingIndex))
                     Console.Write(ob + " ");
