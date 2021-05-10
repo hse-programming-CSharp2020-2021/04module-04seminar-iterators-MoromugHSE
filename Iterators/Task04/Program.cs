@@ -48,6 +48,7 @@ namespace Task04
             {
                 Console.Write($"{enumerator.Current} ");
             }
+            Console.Write('\b');
         }
     }
 
