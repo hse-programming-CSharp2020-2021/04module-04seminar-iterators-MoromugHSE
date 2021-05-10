@@ -44,11 +44,14 @@ namespace Task04
 
         static void IterateThroughEnumeratorWithoutUsingForeach(IEnumerator enumerator)
         {
+            if (enumerator.MoveNext())
+            {
+                Console.Write(enumerator.Current);
+            }
             while (enumerator.MoveNext())
             {
-                Console.Write($"{enumerator.Current} ");
+                Console.Write($" {enumerator.Current}");
             }
-            Console.Write('\b');
         }
     }
 
