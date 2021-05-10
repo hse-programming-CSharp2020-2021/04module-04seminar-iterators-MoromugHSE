@@ -20,7 +20,7 @@ using System.Collections;
  * 1 1024
  * 
  * В случае ввода некорректных данных выбрасывайте ArgumentException.
- * В других ситуациях выбрасывайте 
+ * В других ситуациях выбрасывайте ArithmeticException.
 */
 namespace Task05
 {
@@ -31,6 +31,10 @@ namespace Task05
             try
             {
                 MyDigits myDigits = new MyDigits();
+                if (!int.TryParse(Console.ReadLine(), out int value) || value <= 0)
+                {
+                    throw new ArgumentException("Нельзя");
+                }
                 IEnumerator enumerator = myDigits.MyEnumerator(value);
 
                 IterateThroughEnumeratorWithoutUsingForeach(enumerator);
@@ -56,10 +60,47 @@ namespace Task05
 
     class MyDigits : IEnumerator // НЕ МЕНЯТЬ ЭТУ СТРОКУ
     {
+        private int step = -1;
+        private int currentNumber = 0;
+        private int limit = 0;
 
         public bool MoveNext()
         {
+            var nextNumber = currentNumber + step;
+            if (nextNumber <= 0 || nextNumber >= limit)
+            {
+                Reset();
+                return false;
+            }
+            currentNumber = nextNumber;
+            return true;
+        }
 
+        public void Reset()
+        {
+            step = -step;
+            currentNumber = step > 0 ? 0 : limit+1;
+        }
+
+        public IEnumerator MyEnumerator(int limit)
+        {
+            this.limit = limit;
+            return this;
+        }
+
+        public object Current
+        {
+            get
+            {
+                var result = 1;
+                for (int i = 0; i < 10; ++i)
+                {
+                    // OverflowException - это произвдное от ArithmeticException,
+                    // так что в мэйне всё поймается правильно.
+                    result = checked(result * currentNumber);
+                }
+                return result;
+            }
         }
 
     }
