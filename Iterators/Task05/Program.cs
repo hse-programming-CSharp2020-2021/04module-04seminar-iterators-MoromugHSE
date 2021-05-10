@@ -32,7 +32,7 @@ namespace Task05
             try
             {
                 MyDigits myDigits = new MyDigits();
-                if (!int.TryParse(Console.ReadLine(), out int value) || value <= 0)
+                if (!long.TryParse(Console.ReadLine(), out long value) || value <= 0)
                 {
                     throw new ArgumentException("Нельзя");
                 }
@@ -71,13 +71,13 @@ namespace Task05
 
     class MyDigits : IEnumerator // НЕ МЕНЯТЬ ЭТУ СТРОКУ
     {
-        private int step = 1;
-        private int currentNumber = 0;
-        private int limit = 0;
+        private long step = 1;
+        private long currentNumber = 0;
+        private long limit = 0;
 
         public bool MoveNext()
         {
-            var nextNumber = currentNumber + step;
+            long nextNumber = currentNumber + step;
             if (nextNumber <= 0 || nextNumber > limit)
             {
                 Reset();
@@ -93,7 +93,7 @@ namespace Task05
             currentNumber = step > 0 ? 0 : limit+1;
         }
 
-        public IEnumerator MyEnumerator(int limit)
+        public IEnumerator MyEnumerator(long limit)
         {
             this.limit = limit;
             return this;
@@ -103,8 +103,8 @@ namespace Task05
         {
             get
             {
-                var result = 1;
-                for (int i = 0; i < 10; ++i)
+                long result = 1;
+                for (long i = 0; i < 10; ++i)
                 {
                     // OverflowException - это произвдное от ArithmeticException,
                     // так что в мэйне всё поймается правильно.
