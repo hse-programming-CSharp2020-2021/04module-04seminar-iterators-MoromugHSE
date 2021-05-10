@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections;
 using System.Threading;
 using System.Globalization;
@@ -40,6 +41,7 @@ namespace Task03
             var cult = new CultureInfo("ru-RU");
             Thread.CurrentThread.CurrentCulture = cult;
             Thread.CurrentThread.CurrentUICulture = cult;
+            Console.InputEncoding = Console.OutputEncoding = Encoding.Unicode;
             try
             {
                 int N = 0;
@@ -48,7 +50,10 @@ namespace Task03
                 Person[] people = new Person[N];
                 for (int i = 0; i < N; ++i)
                 {
-                    var name = Console.ReadLine().Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
+                    var name = Console.ReadLine().Split(new char[] { },
+                        StringSplitOptions.RemoveEmptyEntries);
+                    if (name.Length < 2)
+                        throw new ArgumentException("Это подло...");
                     people[i] = new Person(name[1], name[0]);
                 }
 
